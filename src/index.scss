@@ -2,6 +2,11 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+@import "@fontsource/roboto/300.scss";
+@import "@fontsource/roboto/400.scss";
+@import "@fontsource/roboto/500.scss";
+@import "@fontsource/roboto/700.scss";
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
