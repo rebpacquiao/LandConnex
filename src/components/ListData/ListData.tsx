@@ -68,9 +68,11 @@ function ListData() {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.white,
-      color: theme.palette.common.black,
-      borderBottom: '1px px solid #e0e0e0',
+      color: 'gray',
+      borderBottom: '1px solid #e0e0e0',
       padding: '16px',
+      fontSize: '13px',
+      fontWeight: 'bold',
     },
     [`&.${tableCellClasses.body}`]: {
       fontSize: '0.8125rem',
