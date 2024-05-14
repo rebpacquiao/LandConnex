@@ -4,6 +4,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
 import { useState, useEffect } from "react";
 import userData from "../data/userData.jsx";
@@ -12,6 +13,8 @@ import { styled } from "@mui/material/styles";
 
 function ListData() {
   const [users, setUsers] = useState<User[]>([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
     setUsers(userData);
@@ -48,6 +51,19 @@ function ListData() {
     },
   }));
 
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+
+    return event;
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -59,20 +75,31 @@ function ListData() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {users.map((user: User) => (
-            <StyledTableRow key={user.id}>
-              <StyledTableCell>{user.id}</StyledTableCell>
-              <StyledTableCell>{user.firstName}</StyledTableCell>
-              <StyledTableCell>{user.lastName}</StyledTableCell>
-              <StyledTableCell>{user.dob}</StyledTableCell>
-              <StyledTableCell>{user.occupation}</StyledTableCell>
-              <StyledTableCell>{user.accountType}</StyledTableCell>
-              <StyledTableCell>{user.residency}</StyledTableCell>
-              <StyledTableCell>{user.taxId}</StyledTableCell>
-            </StyledTableRow>
-          ))}
+          {users
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((user: User) => (
+              <StyledTableRow key={user.id}>
+                <StyledTableCell>{user.id}</StyledTableCell>
+                <StyledTableCell>{user.firstName}</StyledTableCell>
+                <StyledTableCell>{user.lastName}</StyledTableCell>
+                <StyledTableCell>{user.dob}</StyledTableCell>
+                <StyledTableCell>{user.occupation}</StyledTableCell>
+                <StyledTableCell>{user.accountType}</StyledTableCell>
+                <StyledTableCell>{user.residency}</StyledTableCell>
+                <StyledTableCell>{user.taxId}</StyledTableCell>
+              </StyledTableRow>
+            ))}
         </TableBody>
       </Table>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={users.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </TableContainer>
   );
 }
