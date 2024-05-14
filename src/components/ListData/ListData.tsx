@@ -119,6 +119,47 @@ function ListData() {
     setPage(0);
   };
 
+  const [newUser, setNewUser] = useState<User>({
+    id: '',
+    firstName: '',
+    lastName: '',
+    dob: '',
+    occupation: '',
+    accountType: '',
+    residency: '',
+    taxId: '',
+  });
+
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    // Generate a new id for the new user
+    const newId = users.length + 1;
+
+    console.log(newUser, 'test');
+
+    setUsers((prevUsers) => [...prevUsers, { ...newUser, id: newId }]);
+    setNewUser({
+      id: 0,
+      firstName: '',
+      lastName: '',
+      dob: '',
+      occupation: '',
+      accountType: '',
+      residency: '',
+      taxId: '',
+      contaInfo: [
+        {
+          country: '',
+          states: '',
+          city: '',
+          address: '',
+          zipCode: '',
+        },
+      ],
+    });
+    handleClose();
+  };
   return (
     <>
       <div className="data-list-container">
@@ -225,7 +266,7 @@ function ListData() {
             p: 4,
           }}
         >
-          <form>
+          <form onSubmit={handleFormSubmit}>
             <h2 className="text-2xl mb-3 text-black">Add New Data</h2>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -233,7 +274,14 @@ function ListData() {
                   id="firstName"
                   label="First Name"
                   variant="outlined"
+                  value={newUser.firstName}
                   fullWidth
+                  onChange={(e) =>
+                    setNewUser((prevUser) => ({
+                      ...prevUser,
+                      firstName: e.target.value,
+                    }))
+                  }
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       '& fieldset': {
@@ -255,6 +303,26 @@ function ListData() {
                   label="Last Name"
                   variant="outlined"
                   fullWidth
+                  value={newUser.lastName}
+                  onChange={(e) =>
+                    setNewUser((prevUser) => ({
+                      ...prevUser,
+                      lastName: e.target.value,
+                    }))
+                  }
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#ddd',
+                      },
+                    },
+                    '& .MuiFormLabel-root': {
+                      color: 'gray',
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'gray',
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -263,6 +331,26 @@ function ListData() {
                   label="Date of Birth"
                   variant="outlined"
                   fullWidth
+                  value={newUser.dob}
+                  onChange={(e) =>
+                    setNewUser((prevUser) => ({
+                      ...prevUser,
+                      dob: e.target.value,
+                    }))
+                  }
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#ddd',
+                      },
+                    },
+                    '& .MuiFormLabel-root': {
+                      color: 'gray',
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'gray',
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -271,6 +359,26 @@ function ListData() {
                   label="Occupation"
                   variant="outlined"
                   fullWidth
+                  value={newUser.occupation}
+                  onChange={(e) =>
+                    setNewUser((prevUser) => ({
+                      ...prevUser,
+                      occupation: e.target.value,
+                    }))
+                  }
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#ddd',
+                      },
+                    },
+                    '& .MuiFormLabel-root': {
+                      color: 'gray',
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'gray',
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -279,6 +387,26 @@ function ListData() {
                   label="Account Type"
                   variant="outlined"
                   fullWidth
+                  value={newUser.accountType}
+                  onChange={(e) =>
+                    setNewUser((prevUser) => ({
+                      ...prevUser,
+                      accountType: e.target.value,
+                    }))
+                  }
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#ddd',
+                      },
+                    },
+                    '& .MuiFormLabel-root': {
+                      color: 'gray',
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'gray',
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -287,6 +415,26 @@ function ListData() {
                   label="Residency"
                   variant="outlined"
                   fullWidth
+                  value={newUser.residency}
+                  onChange={(e) =>
+                    setNewUser((prevUser) => ({
+                      ...prevUser,
+                      residency: e.target.value,
+                    }))
+                  }
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#ddd',
+                      },
+                    },
+                    '& .MuiFormLabel-root': {
+                      color: 'gray',
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'gray',
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -295,12 +443,41 @@ function ListData() {
                   label="Tax ID"
                   variant="outlined"
                   fullWidth
+                  value={newUser.taxId}
+                  onChange={(e) =>
+                    setNewUser((prevUser) => ({
+                      ...prevUser,
+                      taxId: e.target.value,
+                    }))
+                  }
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#ddd',
+                      },
+                    },
+                    '& .MuiFormLabel-root': {
+                      color: 'gray',
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'gray',
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
-                <Button type="submit" fullWidth>
-                  Submit
-                </Button>
+                <Box display="flex" justifyContent="flex-end">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    style={{ marginRight: '10px' }}
+                  >
+                    Submit
+                  </Button>
+                  <Button variant="outlined" onClick={handleClose}>
+                    Cancel
+                  </Button>
+                </Box>
               </Grid>
             </Grid>
           </form>
