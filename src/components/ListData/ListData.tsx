@@ -24,6 +24,7 @@ function ListData() {
   const [users, setUsers] = useState<User[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [searchValue, setSearchValue] = useState('');
   const [selected, setSelected] = useState<string[]>([]);
 
@@ -35,6 +36,20 @@ function ListData() {
     }
     setSelected([]);
   };
+
+  useEffect(() => {
+    setUsers(userData);
+  }, []);
+
+  useEffect(() => {
+    setFilteredUsers(
+      users.filter(
+        (user) =>
+          user.firstName.toLowerCase().includes(searchValue.toLowerCase()) ||
+          user.lastName.toLowerCase().includes(searchValue.toLowerCase()),
+      ),
+    );
+  }, [searchValue, users]);
 
   const handleClick = (event: React.MouseEvent<unknown>, id: string) => {
     const selectedIndex = selected.indexOf(id);
@@ -62,10 +77,6 @@ function ListData() {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  useEffect(() => {
-    setUsers(userData);
-  }, []);
 
   const columns = [
     'First Name',
@@ -138,7 +149,7 @@ function ListData() {
 
     console.log(newUser, 'test');
 
-    setUsers((prevUsers) => [...prevUsers, { ...newUser, id: newId }]);
+    setUsers((prevUsers) => [{ ...newUser, id: newId }, ...prevUsers]);
     setNewUser({
       id: 0,
       firstName: '',
