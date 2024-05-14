@@ -10,21 +10,22 @@ import { useState, useEffect } from "react";
 import userData from "../data/userData.jsx";
 import User from "../model/UserModel.jsx";
 import { styled } from "@mui/material/styles";
+import Search from "../components/SearchComponent.jsx";
 
 function ListData() {
   const [users, setUsers] = useState<User[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     setUsers(userData);
   }, []);
 
   const columns = [
-    "ID",
     "First Name",
     "Last Name",
-    "DOB",
+    "Date of Birth",
     "Occupation",
     "Account Type",
     "Residency",
@@ -65,42 +66,59 @@ function ListData() {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            {columns.map((column) => (
-              <StyledTableCell key={column}>{column}</StyledTableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {users
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((user: User) => (
-              <StyledTableRow key={user.id}>
-                <StyledTableCell>{user.id}</StyledTableCell>
-                <StyledTableCell>{user.firstName}</StyledTableCell>
-                <StyledTableCell>{user.lastName}</StyledTableCell>
-                <StyledTableCell>{user.dob}</StyledTableCell>
-                <StyledTableCell>{user.occupation}</StyledTableCell>
-                <StyledTableCell>{user.accountType}</StyledTableCell>
-                <StyledTableCell>{user.residency}</StyledTableCell>
-                <StyledTableCell>{user.taxId}</StyledTableCell>
-              </StyledTableRow>
-            ))}
-        </TableBody>
-      </Table>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={users.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </TableContainer>
+    <>
+      <div className="data-list-container">
+        <div className="filter-section">
+          <Search value={searchValue} onChange={setSearchValue} />
+        </div>
+        <div className="data-list-section">
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <StyledTableCell key={column}>{column}</StyledTableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {users
+                  .filter(
+                    (user) =>
+                      user.firstName
+                        .toLowerCase()
+                        .includes(searchValue.toLowerCase()) ||
+                      user.lastName
+                        .toLowerCase()
+                        .includes(searchValue.toLowerCase())
+                  )
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((user: User) => (
+                    <StyledTableRow key={user.id}>
+                      <StyledTableCell>{user.firstName}</StyledTableCell>
+                      <StyledTableCell>{user.lastName}</StyledTableCell>
+                      <StyledTableCell>{user.dob}</StyledTableCell>
+                      <StyledTableCell>{user.occupation}</StyledTableCell>
+                      <StyledTableCell>{user.accountType}</StyledTableCell>
+                      <StyledTableCell>{user.residency}</StyledTableCell>
+                      <StyledTableCell>{user.taxId}</StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+              </TableBody>
+            </Table>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={users.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </TableContainer>
+        </div>
+      </div>
+    </>
   );
 }
 
