@@ -226,7 +226,14 @@ span.flatpickr-weekday,
   align-self: end;
 }
 
-.bread-crumb {
+.page-heading-section {
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.page-heading-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

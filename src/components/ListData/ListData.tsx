@@ -12,6 +12,9 @@ import User from '../../model/UserModel.jsx';
 import { styled } from '@mui/material/styles';
 import Search from '../../components/Search/SearchComponent.tsx';
 import Checkbox from '@mui/material/Checkbox';
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
 
 function ListData() {
   const [users, setUsers] = useState<User[]>([]);
@@ -90,6 +93,10 @@ function ListData() {
     },
   }));
 
+  const CapitalizedButton = styled(Button)`
+    text-transform: capitalize;
+  `;
+
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
 
@@ -106,6 +113,14 @@ function ListData() {
   return (
     <>
       <div className="data-list-container">
+        <div className="page-heading-section">
+          <Breadcrumb pageName="User Data" />
+          <div className="right-action">
+            <CapitalizedButton variant="contained" startIcon={<AddIcon />}>
+              Add new data
+            </CapitalizedButton>
+          </div>
+        </div>
         <div className="filter-section">
           <Search value={searchValue} onChange={setSearchValue} />
         </div>
