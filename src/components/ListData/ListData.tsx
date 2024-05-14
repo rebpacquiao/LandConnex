@@ -138,7 +138,7 @@ function ListData() {
   };
 
   const [newUser, setNewUser] = useState<User>({
-    id: '',
+    id: Date.now(),
     firstName: '',
     lastName: '',
     dob: '',
@@ -146,6 +146,15 @@ function ListData() {
     accountType: '',
     residency: '',
     taxId: '',
+    contaInfo: [
+      {
+        country: '',
+        states: '',
+        city: '',
+        address: '',
+        zipCode: '',
+      },
+    ],
   });
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -158,7 +167,7 @@ function ListData() {
 
     setUsers((prevUsers) => [{ ...newUser, id: newId }, ...prevUsers]);
     setNewUser({
-      id: 0,
+      id: Date.now(),
       firstName: '',
       lastName: '',
       dob: '',
