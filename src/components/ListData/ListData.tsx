@@ -15,6 +15,10 @@ import Checkbox from '@mui/material/Checkbox';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import { TextField } from '@mui/material';
+import Grid from '@mui/material/Grid';
 
 function ListData() {
   const [users, setUsers] = useState<User[]>([]);
@@ -53,6 +57,11 @@ function ListData() {
 
     return event;
   };
+
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     setUsers(userData);
@@ -116,8 +125,12 @@ function ListData() {
         <div className="page-heading-section">
           <Breadcrumb pageName="User Data" />
           <div className="right-action">
-            <CapitalizedButton variant="contained" startIcon={<AddIcon />}>
-              Add new data
+            <CapitalizedButton
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={handleOpen}
+            >
+              add new data
             </CapitalizedButton>
           </div>
         </div>
@@ -195,6 +208,104 @@ function ListData() {
           </TableContainer>
         </div>
       </div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <form>
+            <h2 className="text-2xl mb-3 text-black">Add New Data</h2>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="firstName"
+                  label="First Name"
+                  variant="outlined"
+                  fullWidth
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#ddd',
+                      },
+                    },
+                    '& .MuiFormLabel-root': {
+                      color: 'gray',
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'gray',
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="lastName"
+                  label="Last Name"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="dob"
+                  label="Date of Birth"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="occupation"
+                  label="Occupation"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="accountType"
+                  label="Account Type"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="residency"
+                  label="Residency"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="taxId"
+                  label="Tax ID"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button type="submit" fullWidth>
+                  Submit
+                </Button>
+              </Grid>
+            </Grid>
+          </form>
+        </Box>
+      </Modal>
     </>
   );
 }
