@@ -70,10 +70,14 @@ function ListData() {
       backgroundColor: theme.palette.common.white,
       color: theme.palette.common.black,
       borderBottom: '1px px solid #e0e0e0',
+      padding: '16px',
     },
     [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
+      fontSize: '0.8125rem',
       borderBottom: '1px px solid #e0e0e0',
+      padding: '16px',
+      color: '#2d2a2ade',
+      fontWeight: 400,
     },
   }));
 
