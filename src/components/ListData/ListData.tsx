@@ -22,7 +22,7 @@ function ListData() {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = users.map((user) => user.id);
+      const newSelecteds = users.map((user) => user.id.toString());
       setSelected(newSelecteds);
       return;
     }
@@ -47,6 +47,8 @@ function ListData() {
     }
 
     setSelected(newSelected);
+
+    return event;
   };
 
   useEffect(() => {
