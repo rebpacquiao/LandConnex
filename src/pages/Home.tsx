@@ -1,5 +1,11 @@
+import ListData from "../components/ListData";
+
 function Home() {
-  return <h1>Welcome to Home Page</h1>;
+  return (
+    <>
+      <ListData />
+    </>
+  );
 }
 
 export default Home;
