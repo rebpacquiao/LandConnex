@@ -21,7 +21,7 @@ import { TextField } from '@mui/material';
 import Grid from '@mui/material/Grid';
 
 function ListData() {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>(userData);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
@@ -38,8 +38,15 @@ function ListData() {
   };
 
   useEffect(() => {
-    setUsers(userData);
-  }, []);
+    setFilteredUsers(
+      users.filter(
+        (user) =>
+          user.firstName.toLowerCase().includes(searchValue.toLowerCase()) ||
+          user.lastName.toLowerCase().includes(searchValue.toLowerCase()),
+      ),
+    );
+    setPage(0);
+  }, [searchValue, users]);
 
   useEffect(() => {
     setFilteredUsers(
@@ -197,10 +204,12 @@ function ListData() {
                   <StyledTableCell padding="checkbox">
                     <Checkbox
                       indeterminate={
-                        selected.length > 0 && selected.length < users.length
+                        selected.length > 0 &&
+                        selected.length < filteredUsers.length
                       }
                       checked={
-                        users.length > 0 && selected.length === users.length
+                        filteredUsers.length > 0 &&
+                        selected.length === filteredUsers.length
                       }
                       onChange={handleSelectAllClick}
                     />
@@ -211,16 +220,7 @@ function ListData() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users
-                  .filter(
-                    (user) =>
-                      user.firstName
-                        .toLowerCase()
-                        .includes(searchValue.toLowerCase()) ||
-                      user.lastName
-                        .toLowerCase()
-                        .includes(searchValue.toLowerCase()),
-                  )
+                {filteredUsers
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((user: User) => {
                     const isItemSelected =
@@ -251,7 +251,7 @@ function ListData() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={users.length}
+              count={filteredUsers.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
