@@ -1,53 +1,83 @@
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TablePagination from "@mui/material/TablePagination";
-import Paper from "@mui/material/Paper";
-import { useState, useEffect } from "react";
-import userData from "../../data/userData.tsx";
-import User from "../../model/UserModel.jsx";
-import { styled } from "@mui/material/styles";
-import Search from "../../components/Search/SearchComponent.tsx";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TablePagination from '@mui/material/TablePagination';
+import Paper from '@mui/material/Paper';
+import { useState, useEffect } from 'react';
+import userData from '../../data/userData.tsx';
+import User from '../../model/UserModel.jsx';
+import { styled } from '@mui/material/styles';
+import Search from '../../components/Search/SearchComponent.tsx';
+import Checkbox from '@mui/material/Checkbox';
 
 function ListData() {
   const [users, setUsers] = useState<User[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
+  const [selected, setSelected] = useState<string[]>([]);
+
+  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      const newSelecteds = users.map((user) => user.id);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  };
+
+  const handleClick = (event: React.MouseEvent<unknown>, id: string) => {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected: string[] = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1),
+      );
+    }
+
+    setSelected(newSelected);
+  };
 
   useEffect(() => {
     setUsers(userData);
   }, []);
 
   const columns = [
-    "First Name",
-    "Last Name",
-    "Date of Birth",
-    "Occupation",
-    "Account Type",
-    "Residency",
-    "Tax ID",
+    'First Name',
+    'Last Name',
+    'Date of Birth',
+    'Occupation',
+    'Account Type',
+    'Residency',
+    'Tax ID',
   ];
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
+      backgroundColor: theme.palette.common.white,
+      color: theme.palette.common.black,
+      borderBottom: '1px px solid #e0e0e0',
     },
     [`&.${tableCellClasses.body}`]: {
       fontSize: 14,
+      borderBottom: '1px px solid #e0e0e0',
     },
   }));
 
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
+  const StyledTableRow = styled(TableRow)(() => ({
     // hide last border
-    "&:last-child td, &:last-child th": {
+    '&:last-child td, &:last-child th': {
       border: 0,
     },
   }));
@@ -59,7 +89,7 @@ function ListData() {
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -72,10 +102,21 @@ function ListData() {
           <Search value={searchValue} onChange={setSearchValue} />
         </div>
         <div className="data-list-section">
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} elevation={0}>
             <Table>
               <TableHead>
                 <TableRow>
+                  <StyledTableCell padding="checkbox">
+                    <Checkbox
+                      indeterminate={
+                        selected.length > 0 && selected.length < users.length
+                      }
+                      checked={
+                        users.length > 0 && selected.length === users.length
+                      }
+                      onChange={handleSelectAllClick}
+                    />
+                  </StyledTableCell>
                   {columns.map((column) => (
                     <StyledTableCell key={column}>{column}</StyledTableCell>
                   ))}
@@ -90,20 +131,33 @@ function ListData() {
                         .includes(searchValue.toLowerCase()) ||
                       user.lastName
                         .toLowerCase()
-                        .includes(searchValue.toLowerCase())
+                        .includes(searchValue.toLowerCase()),
                   )
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((user: User) => (
-                    <StyledTableRow key={user.id}>
-                      <StyledTableCell>{user.firstName}</StyledTableCell>
-                      <StyledTableCell>{user.lastName}</StyledTableCell>
-                      <StyledTableCell>{user.dob}</StyledTableCell>
-                      <StyledTableCell>{user.occupation}</StyledTableCell>
-                      <StyledTableCell>{user.accountType}</StyledTableCell>
-                      <StyledTableCell>{user.residency}</StyledTableCell>
-                      <StyledTableCell>{user.taxId}</StyledTableCell>
-                    </StyledTableRow>
-                  ))}
+                  .map((user: User) => {
+                    const isItemSelected =
+                      selected.indexOf(user.id.toString()) !== -1;
+                    return (
+                      <StyledTableRow
+                        key={user.id}
+                        onClick={(event) =>
+                          handleClick(event, user.id.toString())
+                        }
+                        selected={isItemSelected}
+                      >
+                        <StyledTableCell padding="checkbox">
+                          <Checkbox checked={isItemSelected} />
+                        </StyledTableCell>
+                        <StyledTableCell>{user.firstName}</StyledTableCell>
+                        <StyledTableCell>{user.lastName}</StyledTableCell>
+                        <StyledTableCell>{user.dob}</StyledTableCell>
+                        <StyledTableCell>{user.occupation}</StyledTableCell>
+                        <StyledTableCell>{user.accountType}</StyledTableCell>
+                        <StyledTableCell>{user.residency}</StyledTableCell>
+                        <StyledTableCell>{user.taxId}</StyledTableCell>
+                      </StyledTableRow>
+                    );
+                  })}
               </TableBody>
             </Table>
             <TablePagination
