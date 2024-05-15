@@ -40,12 +40,6 @@
   margin-bottom: 15px;
 }
 
-.page-heading-section {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .data-list-section {
   background: #fff;
   padding: 6px 5px;

@@ -246,7 +246,7 @@ function ListData() {
   return (
     <>
       <div className="data-list-container">
-        <div className="page-heading-section">
+        <div className="flex flex-col sm:flex-row items-center justify-between">
           <Breadcrumb pageName="User Data" />
           <div className="right-action">
             <CapitalizedButton
