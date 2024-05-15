@@ -12,7 +12,6 @@ function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Dummy credentials
     const dummyEmail = 'user@example.com';
     const dummyPassword = 'password';
 
