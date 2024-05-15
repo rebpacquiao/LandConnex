@@ -22,9 +22,7 @@ function Search({ value, onChange }: SearchProps) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
-      <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-        <SearchIcon />
-      </IconButton>
+      <SearchIcon />
     </Paper>
   );
 }

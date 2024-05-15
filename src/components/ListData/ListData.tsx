@@ -95,20 +95,20 @@ function ListData() {
     'Tax ID',
   ];
 
-  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.white,
-      color: 'gray',
-      borderBottom: '1px solid #e0e0e0',
+      backgroundColor: '#F4F7F9',
+      color: '#3D434A',
+      borderBottom: '0 dotted #dee2e6',
       padding: '16px',
       fontSize: '13px',
       fontWeight: 'bold',
     },
     [`&.${tableCellClasses.body}`]: {
       fontSize: '0.8125rem',
-      borderBottom: '1px px solid #e0e0e0',
+      borderBottom: '2px dotted #dee2e6',
       padding: '16px',
-      color: '#2d2a2ade',
+      color: '#3D434A',
       fontWeight: 400,
     },
   }));
