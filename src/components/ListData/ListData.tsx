@@ -348,7 +348,7 @@ function ListData() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   id="dob"
-                  label="Date of Birth"
+                  type="date"
                   variant="outlined"
                   fullWidth
                   value={newUser.dob}
