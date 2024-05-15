@@ -386,6 +386,7 @@ function ListData() {
                   variant="outlined"
                   value={newUser.firstName}
                   fullWidth
+                  required
                   onChange={(e) =>
                     setNewUser((prevUser) => ({
                       ...prevUser,
@@ -413,6 +414,7 @@ function ListData() {
                   label="Last Name"
                   variant="outlined"
                   fullWidth
+                  required
                   value={newUser.lastName}
                   onChange={(e) =>
                     setNewUser((prevUser) => ({
@@ -581,6 +583,7 @@ function ListData() {
                     type="submit"
                     variant="contained"
                     style={{ marginRight: '10px' }}
+                    disabled={!newUser.firstName || !newUser.lastName}
                   >
                     {isEditing ? 'Update' : 'Submit'}
                   </Button>

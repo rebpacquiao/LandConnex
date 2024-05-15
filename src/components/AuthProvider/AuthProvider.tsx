@@ -18,7 +18,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [isLoggedIn]);
 
   const handleLogin = (email: string, password: string) => {
-    const dummyEmail = 'user@example.com';
+    const dummyEmail = 'reb@landconnex.com';
     const dummyPassword = 'landConnex';
 
     if (email === dummyEmail && password === dummyPassword) {
