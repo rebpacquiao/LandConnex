@@ -78,6 +78,15 @@
   gap: 10px;
 }
 
+.login-brand {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  font-size: 33px;
+  font-weight: 600;
+  justify-content: center;
+}
+
 /* For tablets: */
 @media screen and (min-width: 768px) {
   .login-container {
