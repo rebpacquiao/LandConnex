@@ -207,12 +207,18 @@ function ListData() {
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Generate a new id for the new user
-    const newId = users.length + 1;
+    if (isEditing) {
+      // Update the existing user
+      setUsers((prevUsers) =>
+        prevUsers.map((user) => (user.id === newUser.id ? newUser : user)),
+      );
+    } else {
+      // Add a new user
+      const newId = users.length + 1;
+      setUsers((prevUsers) => [{ ...newUser, id: newId }, ...prevUsers]);
+    }
 
-    console.log(newUser, 'test');
-
-    setUsers((prevUsers) => [{ ...newUser, id: newId }, ...prevUsers]);
+    // Reset the form
     setNewUser({
       id: Date.now(),
       firstName: '',
@@ -232,6 +238,7 @@ function ListData() {
         },
       ],
     });
+
     handleClose();
     setOpen(false);
     setIsEditing(false);
