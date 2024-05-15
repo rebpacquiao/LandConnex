@@ -60,6 +60,19 @@
   border-radius: 8px;
 }
 
+.filter-section {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-select .MuiInputBase-input {
+  padding: 8.5px 14px;
+}
+
+.filter-select .MuiInputBase-input li {
+  font-size: 13px;
+}
+
 /* For tablets: */
 @media screen and (min-width: 768px) {
   .login-container {

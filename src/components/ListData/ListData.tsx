@@ -17,8 +17,9 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import { TextField, Select, MenuItem, FormControl } from '@mui/material';
+import { TextField } from '@mui/material';
 import Grid from '@mui/material/Grid';
+import { Select, MenuItem } from '@mui/material';
 
 function ListData() {
   const [users, setUsers] = useState<User[]>(userData);
@@ -27,6 +28,7 @@ function ListData() {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [searchValue, setSearchValue] = useState('');
   const [selected, setSelected] = useState<string[]>([]);
+  const [sorting, setSorting] = useState('None');
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
@@ -58,6 +60,24 @@ function ListData() {
     );
   }, [searchValue, users]);
 
+  const handleSorting = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const value = event.target.value as string;
+    setSorting(value);
+
+    setFilteredUsers((prevUsers) => {
+      const sortedUsers = [...prevUsers];
+      sortedUsers.sort((a, b) => {
+        if (a.firstName < b.firstName) {
+          return value === 'Ascending' ? -1 : 1;
+        }
+        if (a.firstName > b.firstName) {
+          return value === 'Ascending' ? 1 : -1;
+        }
+        return 0;
+      });
+      return sortedUsers;
+    });
+  };
   const handleClick = (event: React.MouseEvent<unknown>, id: string) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected: string[] = [];
@@ -204,6 +224,18 @@ function ListData() {
         </div>
         <div className="filter-section">
           <Search value={searchValue} onChange={setSearchValue} />
+          <Select
+            className="filter-select"
+            value={sorting}
+            onChange={handleSorting}
+            sx={{ backgroundColor: 'white', padding: '0', border: 0 }}
+          >
+            <MenuItem value="None">
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value={'Ascending'}>Ascending</MenuItem>
+            <MenuItem value={'Descending'}>Descending</MenuItem>
+          </Select>
         </div>
         <div className="data-list-section">
           <TableContainer component={Paper} elevation={0}>
@@ -288,223 +320,218 @@ function ListData() {
         >
           <form onSubmit={handleFormSubmit}>
             <h2 className="text-2xl mb-3 text-black">Add New Data</h2>
-            <FormControl>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    id="firstName"
-                    label="First Name"
-                    variant="outlined"
-                    value={newUser.firstName}
-                    fullWidth
-                    onChange={(e) =>
-                      setNewUser((prevUser) => ({
-                        ...prevUser,
-                        firstName: e.target.value,
-                      }))
-                    }
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        '& fieldset': {
-                          borderColor: '#ddd',
-                        },
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="firstName"
+                  label="First Name"
+                  variant="outlined"
+                  value={newUser.firstName}
+                  fullWidth
+                  onChange={(e) =>
+                    setNewUser((prevUser) => ({
+                      ...prevUser,
+                      firstName: e.target.value,
+                    }))
+                  }
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#ddd',
                       },
-                      '& .MuiFormLabel-root': {
-                        color: 'gray',
-                      },
-                      '& .MuiFormLabel-root.Mui-focused': {
-                        color: 'gray',
-                      },
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    id="lastName"
-                    label="Last Name"
-                    variant="outlined"
-                    fullWidth
-                    value={newUser.lastName}
-                    onChange={(e) =>
-                      setNewUser((prevUser) => ({
-                        ...prevUser,
-                        lastName: e.target.value,
-                      }))
-                    }
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        '& fieldset': {
-                          borderColor: '#ddd',
-                        },
-                      },
-                      '& .MuiFormLabel-root': {
-                        color: 'gray',
-                      },
-                      '& .MuiFormLabel-root.Mui-focused': {
-                        color: 'gray',
-                      },
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    id="dob"
-                    type="date"
-                    variant="outlined"
-                    fullWidth
-                    value={newUser.dob}
-                    onChange={(e) =>
-                      setNewUser((prevUser) => ({
-                        ...prevUser,
-                        dob: e.target.value,
-                      }))
-                    }
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        '& fieldset': {
-                          borderColor: '#ddd',
-                        },
-                      },
-                      '& .MuiFormLabel-root': {
-                        color: 'gray',
-                      },
-                      '& .MuiFormLabel-root.Mui-focused': {
-                        color: 'gray',
-                      },
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    id="occupation"
-                    label="Occupation"
-                    variant="outlined"
-                    fullWidth
-                    value={newUser.occupation}
-                    onChange={(e) =>
-                      setNewUser((prevUser) => ({
-                        ...prevUser,
-                        occupation: e.target.value,
-                      }))
-                    }
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        '& fieldset': {
-                          borderColor: '#ddd',
-                        },
-                      },
-                      '& .MuiFormLabel-root': {
-                        color: 'gray',
-                      },
-                      '& .MuiFormLabel-root.Mui-focused': {
-                        color: 'gray',
-                      },
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Select
-                    label="Account Type"
-                    placeholder="Account Type"
-                    value={newUser.accountType}
-                    onChange={(e) =>
-                      setNewUser((prevUser) => ({
-                        ...prevUser,
-                        accountType: e.target.value,
-                      }))
-                    }
-                    sx={{
-                      width: '100%',
-                      '& .MuiOutlinedInput-root': {
-                        '& fieldset': {
-                          borderColor: '#ddd',
-                        },
-                      },
-                      '& .MuiFormLabel-root': {
-                        color: 'gray',
-                      },
-                      '& .MuiFormLabel-root.Mui-focused': {
-                        color: 'gray',
-                      },
-                    }}
-                  >
-                    <MenuItem value={'Investor'}>Investor</MenuItem>
-                    <MenuItem value={'Saver'}>Saver</MenuItem>
-                  </Select>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    id="residency"
-                    label="Residency"
-                    variant="outlined"
-                    fullWidth
-                    value={newUser.residency}
-                    onChange={(e) =>
-                      setNewUser((prevUser) => ({
-                        ...prevUser,
-                        residency: e.target.value,
-                      }))
-                    }
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        '& fieldset': {
-                          borderColor: '#ddd',
-                        },
-                      },
-                      '& .MuiFormLabel-root': {
-                        color: 'gray',
-                      },
-                      '& .MuiFormLabel-root.Mui-focused': {
-                        color: 'gray',
-                      },
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    id="taxId"
-                    type="number"
-                    label="Tax ID"
-                    variant="outlined"
-                    fullWidth
-                    value={newUser.taxId}
-                    onChange={(e) =>
-                      setNewUser((prevUser) => ({
-                        ...prevUser,
-                        taxId: e.target.value,
-                      }))
-                    }
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        '& fieldset': {
-                          borderColor: '#ddd',
-                        },
-                      },
-                      '& .MuiFormLabel-root': {
-                        color: 'gray',
-                      },
-                      '& .MuiFormLabel-root.Mui-focused': {
-                        color: 'gray',
-                      },
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Box display="flex" justifyContent="flex-end">
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      style={{ marginRight: '10px' }}
-                    >
-                      Submit
-                    </Button>
-                    <Button variant="outlined" onClick={handleClose}>
-                      Cancel
-                    </Button>
-                  </Box>
-                </Grid>
+                    },
+                    '& .MuiFormLabel-root': {
+                      color: 'gray',
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'gray',
+                    },
+                  }}
+                />
               </Grid>
-            </FormControl>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="lastName"
+                  label="Last Name"
+                  variant="outlined"
+                  fullWidth
+                  value={newUser.lastName}
+                  onChange={(e) =>
+                    setNewUser((prevUser) => ({
+                      ...prevUser,
+                      lastName: e.target.value,
+                    }))
+                  }
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#ddd',
+                      },
+                    },
+                    '& .MuiFormLabel-root': {
+                      color: 'gray',
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'gray',
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="dob"
+                  type="date"
+                  variant="outlined"
+                  fullWidth
+                  value={newUser.dob}
+                  onChange={(e) =>
+                    setNewUser((prevUser) => ({
+                      ...prevUser,
+                      dob: e.target.value,
+                    }))
+                  }
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#ddd',
+                      },
+                    },
+                    '& .MuiFormLabel-root': {
+                      color: 'gray',
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'gray',
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="occupation"
+                  label="Occupation"
+                  variant="outlined"
+                  fullWidth
+                  value={newUser.occupation}
+                  onChange={(e) =>
+                    setNewUser((prevUser) => ({
+                      ...prevUser,
+                      occupation: e.target.value,
+                    }))
+                  }
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#ddd',
+                      },
+                    },
+                    '& .MuiFormLabel-root': {
+                      color: 'gray',
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'gray',
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="accountType"
+                  label="Account Type"
+                  variant="outlined"
+                  fullWidth
+                  value={newUser.accountType}
+                  onChange={(e) =>
+                    setNewUser((prevUser) => ({
+                      ...prevUser,
+                      accountType: e.target.value,
+                    }))
+                  }
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#ddd',
+                      },
+                    },
+                    '& .MuiFormLabel-root': {
+                      color: 'gray',
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'gray',
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="residency"
+                  label="Residency"
+                  variant="outlined"
+                  fullWidth
+                  value={newUser.residency}
+                  onChange={(e) =>
+                    setNewUser((prevUser) => ({
+                      ...prevUser,
+                      residency: e.target.value,
+                    }))
+                  }
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#ddd',
+                      },
+                    },
+                    '& .MuiFormLabel-root': {
+                      color: 'gray',
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'gray',
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="taxId"
+                  label="Tax ID"
+                  variant="outlined"
+                  fullWidth
+                  value={newUser.taxId}
+                  onChange={(e) =>
+                    setNewUser((prevUser) => ({
+                      ...prevUser,
+                      taxId: e.target.value,
+                    }))
+                  }
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#ddd',
+                      },
+                    },
+                    '& .MuiFormLabel-root': {
+                      color: 'gray',
+                    },
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'gray',
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Box display="flex" justifyContent="flex-end">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    style={{ marginRight: '10px' }}
+                  >
+                    Submit
+                  </Button>
+                  <Button variant="outlined" onClick={handleClose}>
+                    Cancel
+                  </Button>
+                </Box>
+              </Grid>
+            </Grid>
           </form>
         </Box>
       </Modal>
