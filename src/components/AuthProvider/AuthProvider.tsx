@@ -26,14 +26,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoggedIn(false);
   };
 
-  const handleCloseSnackbar = (reason?: string) => {
+  const handleCloseSnackbar = (
+    _: React.SyntheticEvent | Event,
+    reason?: string,
+  ) => {
     if (reason === 'clickaway') {
       return;
     }
 
     setOpenSnackbar(false);
   };
-
   return (
     <AuthContext.Provider
       value={{ isLoggedIn, onLogin: handleLogin, onLogout: handleLogout }}
