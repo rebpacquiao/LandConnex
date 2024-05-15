@@ -11,7 +11,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      navigate('/login');
+      navigate('/');
     }
   }, [isLoggedIn, navigate]);
 
