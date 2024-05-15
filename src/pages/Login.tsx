@@ -33,7 +33,7 @@ function Login() {
                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                 alt="Your Company"
               />
-              <h5>Land Connex</h5>
+              <h5>LandConnex</h5>
             </div>
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
               Sign in to your account
