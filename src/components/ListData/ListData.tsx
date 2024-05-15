@@ -21,6 +21,7 @@ import { TextField } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { Select, MenuItem } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 function ListData() {
   const [users, setUsers] = useState<User[]>(userData);
@@ -30,6 +31,8 @@ function ListData() {
   const [searchValue, setSearchValue] = useState('');
   const [selected, setSelected] = useState<string[]>([]);
   const [sorting, setSorting] = useState('None');
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
@@ -104,7 +107,10 @@ function ListData() {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setIsEditing(false);
+  };
 
   const handleDelete = () => {
     setUsers((prevUsers) =>
@@ -113,6 +119,19 @@ function ListData() {
     setSelected([]);
   };
 
+  const handleEdit = () => {
+    const userToEdit = users.find((user) =>
+      selected.includes(user.id.toString()),
+    );
+
+    if (userToEdit) {
+      console.log(currentUser);
+      setCurrentUser(userToEdit);
+      setNewUser(userToEdit);
+      setOpen(true);
+      setIsEditing(true);
+    }
+  };
   const columns = [
     'First Name',
     'Last Name',
@@ -214,6 +233,8 @@ function ListData() {
       ],
     });
     handleClose();
+    setOpen(false);
+    setIsEditing(false);
   };
   return (
     <>
@@ -221,6 +242,22 @@ function ListData() {
         <div className="page-heading-section">
           <Breadcrumb pageName="User Data" />
           <div className="right-action">
+            <CapitalizedButton
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={handleOpen}
+            >
+              add new data
+            </CapitalizedButton>
+            <CapitalizedButton
+              variant="contained"
+              color="success"
+              onClick={handleEdit}
+              startIcon={<EditIcon />}
+              disabled={selected.length === 0}
+            >
+              Edit
+            </CapitalizedButton>
             <CapitalizedButton
               variant="contained"
               startIcon={<DeleteIcon />}
@@ -231,13 +268,6 @@ function ListData() {
               }}
             >
               Delete
-            </CapitalizedButton>
-            <CapitalizedButton
-              variant="contained"
-              startIcon={<AddIcon />}
-              onClick={handleOpen}
-            >
-              add new data
             </CapitalizedButton>
           </div>
         </div>
@@ -338,7 +368,9 @@ function ListData() {
           }}
         >
           <form onSubmit={handleFormSubmit}>
-            <h2 className="text-2xl mb-3 text-black">Add New Data</h2>
+            <h2 className="text-2xl mb-3 text-black">
+              {isEditing ? 'Edit Data' : 'Add New Data'}
+            </h2>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -543,7 +575,7 @@ function ListData() {
                     variant="contained"
                     style={{ marginRight: '10px' }}
                   >
-                    Submit
+                    {isEditing ? 'Update' : 'Submit'}
                   </Button>
                   <Button variant="outlined" onClick={handleClose}>
                     Cancel
