@@ -73,6 +73,11 @@
   font-size: 13px;
 }
 
+.right-action {
+  display: flex;
+  gap: 10px;
+}
+
 /* For tablets: */
 @media screen and (min-width: 768px) {
   .login-container {

@@ -20,6 +20,7 @@ import Box from '@mui/material/Box';
 import { TextField } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { Select, MenuItem } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function ListData() {
   const [users, setUsers] = useState<User[]>(userData);
@@ -104,6 +105,13 @@ function ListData() {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleDelete = () => {
+    setUsers((prevUsers) =>
+      prevUsers.filter((user) => !selected.includes(user.id.toString())),
+    );
+    setSelected([]);
+  };
 
   const columns = [
     'First Name',
@@ -213,6 +221,17 @@ function ListData() {
         <div className="page-heading-section">
           <Breadcrumb pageName="User Data" />
           <div className="right-action">
+            <CapitalizedButton
+              variant="contained"
+              startIcon={<DeleteIcon />}
+              onClick={handleDelete}
+              disabled={selected.length === 0}
+              style={{
+                backgroundColor: selected.length === 0 ? '' : 'red',
+              }}
+            >
+              Delete
+            </CapitalizedButton>
             <CapitalizedButton
               variant="contained"
               startIcon={<AddIcon />}
