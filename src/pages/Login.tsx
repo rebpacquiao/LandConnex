@@ -9,7 +9,7 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const dummyEmail = 'user@example.com';
