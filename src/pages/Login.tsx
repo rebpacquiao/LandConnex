@@ -1,8 +1,28 @@
 import { TextField } from '@mui/material';
 import Button from '@mui/material/Button';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import backgroundImage from '../../src/assets/login-bg.jpg';
 
 function Login() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    // Dummy credentials
+    const dummyEmail = 'user@example.com';
+    const dummyPassword = 'password';
+
+    if (email === dummyEmail && password === dummyPassword) {
+      navigate('/dashboard');
+    } else {
+      alert('Invalid credentials');
+    }
+  };
+
   return (
     <>
       <div
@@ -22,7 +42,12 @@ function Login() {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" action="#" method="POST">
+            <form
+              className="space-y-6"
+              action="#"
+              method="POST"
+              onSubmit={handleLogin}
+            >
               <div>
                 <div className="mt-2">
                   <TextField
@@ -30,6 +55,8 @@ function Login() {
                     label="Email"
                     variant="outlined"
                     fullWidth
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         '& fieldset': {
@@ -54,10 +81,12 @@ function Login() {
                 <div className="mt-2">
                   <TextField
                     id="password"
-                    label="password"
+                    label="Password"
                     type="password"
                     variant="outlined"
                     fullWidth
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         '& fieldset': {
@@ -68,10 +97,10 @@ function Login() {
                         },
                       },
                       '& .MuiFormLabel-root': {
-                        color: 'gray',
+                        color: '#fff',
                       },
                       '& .MuiFormLabel-root.Mui-focused': {
-                        color: 'gray',
+                        color: '#fff',
                       },
                     }}
                   />
