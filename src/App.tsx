@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import Dashboard from './pages/Dashboard/Dashboard';
+import { AuthProvider } from './components/AuthProvider/AuthProvider';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -21,7 +22,7 @@ function App() {
   return loading ? (
     <Loader />
   ) : (
-    <>
+    <AuthProvider>
       <Routes>
         <Route path="/" index element={<Login />} />
         <Route
@@ -34,7 +35,7 @@ function App() {
           }
         />
       </Routes>
-    </>
+    </AuthProvider>
   );
 }
 

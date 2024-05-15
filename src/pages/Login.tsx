@@ -3,23 +3,20 @@ import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import backgroundImage from '../../src/assets/login-bg.jpg';
+import { useContext } from 'react';
+import { AuthContext } from '../contexts/AuthContext';
 
 function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const { onLogin } = useContext(AuthContext);
+
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const dummyEmail = 'user@example.com';
-    const dummyPassword = 'password';
-
-    if (email === dummyEmail && password === dummyPassword) {
-      navigate('/dashboard');
-    } else {
-      alert('Invalid credentials');
-    }
+    onLogin(email, password);
+    navigate('/dashboard');
   };
 
   return (
@@ -69,7 +66,7 @@ function Login() {
                         color: '#fff',
                       },
                       '& .MuiFormLabel-root.Mui-focused': {
-                        color: '##3fff',
+                        color: '#fff',
                       },
                     }}
                   />
