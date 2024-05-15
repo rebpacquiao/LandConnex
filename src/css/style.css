@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  background-color: #fff;
+}
+
 @layer base {
   body {
     @apply font-satoshi font-normal text-base text-body bg-whiten relative z-1;
@@ -242,4 +246,26 @@ span.flatpickr-weekday,
   background: #fff;
   padding: 6px 5px;
   border-radius: 8px;
+}
+
+.login-container {
+  width: 100%;
+  margin: 0 auto;
+  background: rgb(0 0 0 / 71%);
+  padding: 38px 24px;
+  border-radius: 8px;
+}
+
+/* For tablets: */
+@media screen and (min-width: 768px) {
+  .login-container {
+    width: 50%;
+  }
+}
+
+/* For desktop: */
+@media screen and (min-width: 1024px) {
+  .login-container {
+    width: 28%;
+  }
 }

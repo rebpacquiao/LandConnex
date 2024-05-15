@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
+import Login from './pages/Login';
 
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
@@ -22,8 +23,9 @@ function App() {
   ) : (
     <>
       <Routes>
+        <Route path="/" index element={<Login />} />
         <Route
-          index
+          path="/dashboard"
           element={
             <>
               <PageTitle title="LandConnex | Dashboard" />
